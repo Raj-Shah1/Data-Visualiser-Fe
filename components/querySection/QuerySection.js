@@ -58,6 +58,8 @@ export default function QuerySection(props) {
                             name="UNIQUE_ID_OF_DIV"
                             editorProps={{ $blockScrolling: true }}
                             highlightActiveLine={false}
+                            value={props.generatedQuery}
+                            readOnly={true}
                             style={{ borderBottomLeftRadius: "12px", borderTopLeftRadius: "12px", minHeight: "660px", minWidth: "600px", }}
                         />
                         <button
@@ -66,13 +68,13 @@ export default function QuerySection(props) {
                         </button>
                     </div>
                     {props.showSavedQuery && (
-                    <div className="bg-[#100E12] min-h-[660px] min-w-[150px]">
-                        <p className="text-white px-[12px] py-[8px] bg-[#232129] text-center font-normal text-[10px]">Select Graph</p>
-                        <div className="flex gap-[24px] flex-col items-center pt-[24px]">
-                            <button><ColumnChart /></button>
-                            <button><BarChart /></button>
+                        <div className="bg-[#100E12] min-h-[660px] min-w-[150px]">
+                            <p className="text-white px-[12px] py-[8px] bg-[#232129] text-center font-normal text-[10px]">Select Graph</p>
+                            <div className="flex gap-[24px] flex-col items-center pt-[24px]">
+                                <button><ColumnChart /></button>
+                                <button><BarChart /></button>
+                            </div>
                         </div>
-                    </div>
                     )}
                 </div>
             </div>
