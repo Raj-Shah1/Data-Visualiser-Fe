@@ -22,18 +22,14 @@ export default function Navbar(props) {
             user_question: userInput,
         };
         const headers = {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/json'
         };
 
-        const formData = new FormData();
-        for (const key in data) {
-            formData.append(key, data[key]);
-        }
 
         fetch(generateUrl, {
             method: 'POST',
             headers: headers,
-            body: formData,
+            body: JSON.stringify(data),
         })
         .then(response => {
             if (response.ok) {
