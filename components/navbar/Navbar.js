@@ -19,7 +19,7 @@ export default function Navbar(props) {
         const generateUrl = 'http://127.0.0.1:5000/generate-query';
 
         const data = {
-            user_query: userInput,
+            user_question: userInput,
         };
         const headers = {
             'Content-Type': 'application/x-www-form-urlencoded'
