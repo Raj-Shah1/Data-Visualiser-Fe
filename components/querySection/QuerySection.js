@@ -59,11 +59,10 @@ export default function QuerySection(props) {
                             editorProps={{ $blockScrolling: true }}
                             highlightActiveLine={false}
                             value={props.generatedQuery}
-                            readOnly={true}
                             style={{ borderBottomLeftRadius: "12px", borderTopLeftRadius: "12px", minHeight: "660px", minWidth: "600px", }}
                         />
                         <button
-                            className="bg-[#232129] text-white px-4 py-2 rounded-md absolute top-[10px] left-[85%]">
+                            className="bg-[#232129] text-white px-4 py-2 rounded-md absolute bottom-[10px] left-[85%]">
                             <Run />
                         </button>
                     </div>
