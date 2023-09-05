@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CrossIcon from "../../assets/svg/CrossIcon";
 import Download from "../../assets/svg/Download";
 import ShareIcon from "../../assets/svg/Share";
@@ -12,11 +12,14 @@ import "ace-builds/src-noconflict/ext-language_tools";
 import Run from "../../assets/svg/Run";
 import ColumnChart from "../../assets/chart-svg/ColumnChart";
 import BarChart from "../../assets/chart-svg/BarChart";
+import { Chart } from 'react-google-charts';
 
 
 export default function QuerySection(props) {
 
     const [tabs, setTabs] = useState([{ id: 1, query: "" }]);
+
+    const currentActiveTab = props.activeTab;
 
     const addTab = () => {
         const newTabId = tabs.length + 1;
@@ -40,6 +43,49 @@ export default function QuerySection(props) {
         );
         setTabs(updatedTabs);
     };
+
+    console.log("props.generatedQuery[props.activeTab]", props.generatedQuery[props.activeTab])
+
+    const handleExecuteQuery = () => {
+
+        const executeUrl = 'http://127.0.0.1:5000/execute-query';
+
+        const data = {
+            query: props.generatedQuery[currentActiveTab],
+        };
+        
+        const headers = {
+            'Content-Type': 'application/json'
+        };
+
+        fetch(executeUrl, {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(data),
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                } else {
+                    throw new Error('Request failed');
+                }
+            })
+            .then(queryOutput => {
+                 props.setQueryOutput({ ...props.generatedQuery, [currentActiveTab]: queryOutput });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+    }
+
+    // useEffect(() => {
+    //     console.log("props.getQueryOutput------", props.getQueryOutput[currentActiveTab]);
+    // }, [props.getQueryOutput]);
+
+    //     const queryOutputResult = props.getQueryOutput[currentActiveTab];
+
+    //     // console.log("type of ", typeof(queryOutputResult));
 
     return (
         <>
@@ -93,7 +139,9 @@ export default function QuerySection(props) {
                             onChange={handleChangeQuery}
                             style={{ borderBottomLeftRadius: "12px", borderTopLeftRadius: "12px", minHeight: "660px", minWidth: "600px", }}
                         />
-                        <button
+                        <button onClick= { () => {
+                            handleExecuteQuery();
+                        }}
                             className="bg-[#232129] text-white px-4 py-2 rounded-md absolute bottom-[10px] left-[85%]">
                             <Run />
                         </button>
@@ -107,6 +155,15 @@ export default function QuerySection(props) {
                             </div>
                         </div>
                     )}
+                    <div className="ml-[50px]">
+                        <Chart
+                            chartType="ScatterChart"
+                            data={ queryOutputResult ? JSON.parse(queryOutputResult) : ""}
+                            width="100%"
+                            height="400px"
+                            legendToggle
+                        />
+                    </div>
                 </div>
             </div>
         </>
