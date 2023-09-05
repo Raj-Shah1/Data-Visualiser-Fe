@@ -90,7 +90,7 @@ export default function QuerySection(props) {
                             name="UNIQUE_ID_OF_DIV"
                             editorProps={{ $blockScrolling: true }}
                             highlightActiveLine={false}
-                            value={tabs.find((tab) => tab.id === activeTab)?.query ? props.generatedQuery : ""}
+                            value={tabs.find((tab) => tab.id === activeTab) ? props.generatedQuery : ""}
                             onChange={handleChangeQuery}
                             style={{ borderBottomLeftRadius: "12px", borderTopLeftRadius: "12px", minHeight: "660px", minWidth: "600px", }}
                         />
