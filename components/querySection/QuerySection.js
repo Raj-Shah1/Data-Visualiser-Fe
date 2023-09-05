@@ -16,27 +16,59 @@ import BarChart from "../../assets/chart-svg/BarChart";
 
 export default function QuerySection(props) {
 
+    const [tabs, setTabs] = useState([{ id: 1, query: "" }]);
+    const [activeTab, setActiveTab] = useState(1);
+
+    const addTab = () => {
+        const newTabId = tabs.length + 1;
+        setTabs([...tabs, { id: newTabId, query: "" }]);
+        setActiveTab(newTabId);
+    };
+
+    const closeTab = (tabId) => {
+        const updatedTabs = tabs.filter((tab) => tab.id !== tabId);
+        setTabs(updatedTabs);
+        setActiveTab(updatedTabs.length > 0 ? updatedTabs[0].id : null);
+    };
+
+    const switchTab = (tabId) => {
+        setActiveTab(tabId);
+    };
+
+    const handleChangeQuery = (value) => {
+        const updatedTabs = tabs.map((tab) =>
+            tab.id === activeTab ? { ...tab, query: value } : tab
+        );
+        setTabs(updatedTabs);
+    };
+
     return (
         <>
             <div className="bg-[#25242d80] mx-[32px] min-h-[740px]">
                 <div className="px-[25px] py-[10px] flex rounded-[12px] ">
                     <div className="flex items-center gap-[22px]">
-                        {/* {props.showSavedQuery && (
-                            <button className="flex items-center">
-                                <Save />
-                                <span className="text-[12px] pl-[5px] text-white">Saved Queries</span>
-                            </button>
-                        )} */}
-                        {props.showSavedQuery && (
-                            <div className="bg-[#d4cbff4d] px-[12px] py-[8px] rounded-[44px] flex items-center">
-                                <p className="text-white text-[12px] mr-[5px]">Query 1</p>
-                                <button onClick={() => setShowQuery1(false)}> <CrossIcon /></button>
-                            </div>
-                        )}
-                        <button className="bg-[#d4cbff4d] px-[8px] text-[18px] py-[8px] rounded-[10px] flex items-center">
+                        <div className="flex gap-[22px]">
+                            {tabs.map((tab) => (
+                                <div
+                                    key={tab.id}
+                                    className={`bg-[#d4cbff4d] px-[12px] py-[8px] rounded-[44px] flex items-center ${tab.id === activeTab ? "border-2 border-blue-500" : ""
+                                        }`}
+                                >
+                                    <p
+                                        className="text-white text-[12px] mr-[5px] cursor-pointer"
+                                        onClick={() => switchTab(tab.id)}
+                                    >
+                                        {`Query ${tab.id}`}
+                                    </p>
+                                    <button onClick={() => closeTab(tab.id)}>
+                                        <CrossIcon />
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                        <button onClick={addTab} className="bg-[#d4cbff4d] px-[8px] text-[18px] py-[8px] rounded-[10px] flex items-center">
                             <PlusIcon />
                         </button>
-
                     </div>
                     <div className="flex gap-[28px] ml-auto">
                         <button className="flex items-center">
@@ -58,7 +90,8 @@ export default function QuerySection(props) {
                             name="UNIQUE_ID_OF_DIV"
                             editorProps={{ $blockScrolling: true }}
                             highlightActiveLine={false}
-                            value={props.generatedQuery}
+                            value={tabs.find((tab) => tab.id === activeTab)?.query}
+                            onChange={handleChangeQuery}
                             style={{ borderBottomLeftRadius: "12px", borderTopLeftRadius: "12px", minHeight: "660px", minWidth: "600px", }}
                         />
                         <button
