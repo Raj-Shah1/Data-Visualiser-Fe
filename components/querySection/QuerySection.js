@@ -21,12 +21,12 @@ export default function QuerySection(props) {
             <div className="bg-[#25242d80] mx-[32px] min-h-[740px]">
                 <div className="px-[25px] py-[10px] flex rounded-[12px] ">
                     <div className="flex items-center gap-[22px]">
-                        {props.showSavedQuery && (
+                        {/* {props.showSavedQuery && (
                             <button className="flex items-center">
                                 <Save />
                                 <span className="text-[12px] pl-[5px] text-white">Saved Queries</span>
                             </button>
-                        )}
+                        )} */}
                         {props.showSavedQuery && (
                             <div className="bg-[#d4cbff4d] px-[12px] py-[8px] rounded-[44px] flex items-center">
                                 <p className="text-white text-[12px] mr-[5px]">Query 1</p>

@@ -14,8 +14,6 @@ export default function Navbar(props) {
     };
     
     const handleGenerateClick = () => {
-        // props.setGeneratedQuery("response Text");
-        // return false;
         const generateUrl = 'http://127.0.0.1:5000/generate-query';
 
         const data = {
