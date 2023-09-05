@@ -38,7 +38,8 @@ export default function Navbar(props) {
         })
         .then(responseText => {
             // Step 3: Update the state with the generated query
-            props.setGeneratedQuery(responseText);
+            
+            props.setGeneratedQuery({...props.generatedQuery, [props.activeTab]: responseText});
         })
         .catch(error => {
             console.error('Error:', error);

@@ -7,11 +7,12 @@ export default function Home() {
 
   const [showSavedQuery, setShowSavedQuery] = useState(false);
   const [generatedQuery, setGeneratedQuery] = useState("");
+  const [activeTab, setActiveTab] = useState(1);
 
   return (
   <>
-  <Navbar showSavedQuery={showSavedQuery} setShowSavedQuery={setShowSavedQuery} generatedQuery={generatedQuery} setGeneratedQuery={setGeneratedQuery} />
-  <QuerySection showSavedQuery={showSavedQuery} setShowSavedQuery={setShowSavedQuery} generatedQuery={generatedQuery} />
+  <Navbar showSavedQuery={showSavedQuery} setShowSavedQuery={setShowSavedQuery} generatedQuery={generatedQuery} setGeneratedQuery={setGeneratedQuery} activeTab={activeTab}/>
+  <QuerySection showSavedQuery={showSavedQuery} setShowSavedQuery={setShowSavedQuery} generatedQuery={generatedQuery} activeTab={activeTab} setActiveTab={setActiveTab}/>
   </>
   )
 }

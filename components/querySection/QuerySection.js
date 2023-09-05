@@ -17,27 +17,26 @@ import BarChart from "../../assets/chart-svg/BarChart";
 export default function QuerySection(props) {
 
     const [tabs, setTabs] = useState([{ id: 1, query: "" }]);
-    const [activeTab, setActiveTab] = useState(1);
 
     const addTab = () => {
         const newTabId = tabs.length + 1;
         setTabs([...tabs, { id: newTabId, query: "" }]);
-        setActiveTab(newTabId);
+        props.setActiveTab(newTabId);
     };
 
     const closeTab = (tabId) => {
         const updatedTabs = tabs.filter((tab) => tab.id !== tabId);
         setTabs(updatedTabs);
-        setActiveTab(updatedTabs.length > 0 ? updatedTabs[0].id : null);
+        props.setActiveTab(updatedTabs.length > 0 ? updatedTabs[0].id : null);
     };
 
     const switchTab = (tabId) => {
-        setActiveTab(tabId);
+        props.setActiveTab(tabId);
     };
 
     const handleChangeQuery = (value) => {
         const updatedTabs = tabs.map((tab) =>
-            tab.id === activeTab ? { ...tab, query: value } : tab
+            tab.id === props.activeTab ? { ...tab, query: value } : tab
         );
         setTabs(updatedTabs);
     };
@@ -51,7 +50,7 @@ export default function QuerySection(props) {
                             {tabs.map((tab) => (
                                 <div
                                     key={tab.id}
-                                    className={`bg-[#d4cbff4d] px-[12px] py-[8px] rounded-[44px] flex items-center ${tab.id === activeTab ? "border-2 border-blue-500" : ""
+                                    className={`bg-[#d4cbff4d] px-[12px] py-[8px] rounded-[44px] flex items-center ${tab.id === props.activeTab ? "border-2 border-blue-500" : ""
                                         }`}
                                 >
                                     <p
@@ -90,7 +89,7 @@ export default function QuerySection(props) {
                             name="UNIQUE_ID_OF_DIV"
                             editorProps={{ $blockScrolling: true }}
                             highlightActiveLine={false}
-                            value={tabs.find((tab) => tab.id === activeTab) ? props.generatedQuery : ""}
+                            value={tabs.find((tab) => tab.id === props.activeTab) ? props.generatedQuery[props.activeTab] : ""}
                             onChange={handleChangeQuery}
                             style={{ borderBottomLeftRadius: "12px", borderTopLeftRadius: "12px", minHeight: "660px", minWidth: "600px", }}
                         />
