@@ -53,7 +53,7 @@ export default function QuerySection(props) {
         const data = {
             query: props.generatedQuery[currentActiveTab],
         };
-        
+
         const headers = {
             'Content-Type': 'application/json'
         };
@@ -71,7 +71,7 @@ export default function QuerySection(props) {
                 }
             })
             .then(queryOutput => {
-                 props.setQueryOutput({ ...props.generatedQuery, [currentActiveTab]: queryOutput });
+                props.setQueryOutput({ ...props.generatedQuery, [currentActiveTab]: queryOutput });
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -83,8 +83,7 @@ export default function QuerySection(props) {
     //     console.log("props.getQueryOutput------", props.getQueryOutput[currentActiveTab]);
     // }, [props.getQueryOutput]);
 
-    //     const queryOutputResult = props.getQueryOutput[currentActiveTab];
-
+    const queryOutputResult = props.getQueryOutput[currentActiveTab];
     //     // console.log("type of ", typeof(queryOutputResult));
 
     return (
@@ -139,7 +138,7 @@ export default function QuerySection(props) {
                             onChange={handleChangeQuery}
                             style={{ borderBottomLeftRadius: "12px", borderTopLeftRadius: "12px", minHeight: "660px", minWidth: "600px", }}
                         />
-                        <button onClick= { () => {
+                        <button onClick={() => {
                             handleExecuteQuery();
                         }}
                             className="bg-[#232129] text-white px-4 py-2 rounded-md absolute bottom-[10px] left-[85%]">
@@ -158,7 +157,7 @@ export default function QuerySection(props) {
                     <div className="ml-[50px]">
                         <Chart
                             chartType="ScatterChart"
-                            data={ queryOutputResult ? JSON.parse(queryOutputResult) : ""}
+                            data={queryOutputResult ? JSON.parse(queryOutputResult) : ""}
                             width="100%"
                             height="400px"
                             legendToggle
