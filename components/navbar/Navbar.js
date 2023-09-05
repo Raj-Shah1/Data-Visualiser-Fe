@@ -4,10 +4,8 @@ import GenerateNlLogo from "../../assets/svg/GenerateNlLogo";
 import Sparkle from "../../assets/svg/Sparkle";
 
 export default function Navbar(props) {
-
     
     const [userInput, setUserInput] = useState(""); 
-
 
     const handleInputChange = (e) => {
         setUserInput(e.target.value);
@@ -23,7 +21,6 @@ export default function Navbar(props) {
             'Content-Type': 'application/json'
         };
 
-
         fetch(generateUrl, {
             method: 'POST',
             headers: headers,
@@ -37,15 +34,11 @@ export default function Navbar(props) {
             }
         })
         .then(responseText => {
-            // Step 3: Update the state with the generated query
-            
             props.setGeneratedQuery({...props.generatedQuery, [props.activeTab]: responseText});
         })
         .catch(error => {
             console.error('Error:', error);
-            // Handle errors here
         });
-
         props.setShowSavedQuery(true);
     };
 

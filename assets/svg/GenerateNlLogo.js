@@ -1,45 +1,58 @@
 import * as React from "react";
 const GenerateNlLogo = (props) => (
   <>
-    <svg
-      width={35}
-      height={37}
-      viewBox="0 0 35 37"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
-      <path
-        d="M5.87591 23.5036L3.61295 21.2407C1.61757 19.2453 1.61757 16.0102 3.61295 14.0148L13.9883 3.63942C15.994 1.63374 19.2495 1.64562 21.2405 3.66589L31.5178 14.0944C33.4574 16.0624 33.4809 19.2159 31.5709 21.2127L29.3796 23.5036"
-        stroke="white"
-        strokeWidth={2.0438}
-        strokeLinecap="round"
-      />
-      <path
-        d="M11.241 28.3577L21.2045 18.3942"
-        stroke="#B93131"
-        strokeWidth={2.0438}
-        strokeLinecap="round"
-      />
-      <path
-        d="M10.9854 28.6131L8.43066 26.0584"
-        stroke="#B93131"
-        strokeWidth={2.0438}
-        strokeLinecap="round"
-      />
-      <path
-        d="M14.3066 31.6788L22.2263 23.7591"
-        stroke="#B65656"
-        strokeWidth={2.0438}
-        strokeLinecap="round"
-      />
-      <path
-        d="M17.6277 35L21.4598 31.1679"
-        stroke="#B36E6E"
-        strokeWidth={2.0438}
-        strokeLinecap="round"
-      />
-    </svg>
+  <svg
+    width={63}
+    height={63}
+    viewBox="0 0 63 63"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path
+      d="M26.6495 47.2637L22.6152 47.3046C19.0579 47.3406 16.145 44.486 16.109 40.9288L15.9217 22.432C15.8855 18.8563 18.7687 15.9355 22.3445 15.9254L40.8027 15.8733C44.2861 15.8634 47.1462 18.6247 47.2589 22.1063L47.3881 26.1009"
+      stroke="url(#paint0_linear_104_102)"
+      strokeWidth={3.4038}
+      strokeLinecap="round"
+    />
+    <path
+      d="M35.7526 46.7166L35.5728 28.954"
+      stroke="#F8B3EE"
+      strokeWidth={3.4038}
+      strokeLinecap="round"
+    />
+    <path
+      d="M35.7577 47.172L31.2032 47.2181"
+      stroke="#F8B3EE"
+      strokeWidth={3.4038}
+      strokeLinecap="round"
+    />
+    <path
+      d="M41.4491 46.886L41.3062 32.7671"
+      stroke="#FFD6F9"
+      strokeWidth={3.4038}
+      strokeLinecap="round"
+    />
+    <path
+      d="M47.3708 46.8252L47.3016 39.9934"
+      stroke="#E7DCE9"
+      strokeWidth={3.4038}
+      strokeLinecap="round"
+    />
+    <defs>
+      <linearGradient
+        id="paint0_linear_104_102"
+        x1={15.7433}
+        y1={16.0588}
+        x2={36.9061}
+        y2={36.7973}
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop stopColor="#F3CFED" />
+        <stop offset={1} stopColor="#E7DCE9" />
+      </linearGradient>
+    </defs>
+  </svg>
   </>
 );
 export default GenerateNlLogo;

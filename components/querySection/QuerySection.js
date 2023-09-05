@@ -4,7 +4,6 @@ import CrossIcon from "../../assets/svg/CrossIcon";
 import Download from "../../assets/svg/Download";
 import ShareIcon from "../../assets/svg/Share";
 import PlusIcon from "../../assets/svg/PlusIcon";
-import Save from "../../assets/svg/Save";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-github";
@@ -13,6 +12,7 @@ import Run from "../../assets/svg/Run";
 import ColumnChart from "../../assets/chart-svg/ColumnChart";
 import BarChart from "../../assets/chart-svg/BarChart";
 import { Chart } from 'react-google-charts';
+import Copy from "../../assets/svg/Copy";
 
 
 export default function QuerySection(props) {
@@ -44,8 +44,6 @@ export default function QuerySection(props) {
         setTabs(updatedTabs);
     };
 
-    console.log("props.generatedQuery[props.activeTab]", props.generatedQuery[props.activeTab])
-
     const handleExecuteQuery = () => {
 
         const executeUrl = 'http://127.0.0.1:5000/execute-query';
@@ -76,15 +74,23 @@ export default function QuerySection(props) {
             .catch(error => {
                 console.error('Error:', error);
             });
-
     }
 
-    // useEffect(() => {
-    //     console.log("props.getQueryOutput------", props.getQueryOutput[currentActiveTab]);
-    // }, [props.getQueryOutput]);
+    const downloadChart = () => {
+        const chartData = queryOutputResult ? JSON.parse(queryOutputResult) : null;
+        if (chartData) {
+            const chartDataUri = "data:application/json;charset=utf-8," + encodeURIComponent(JSON.stringify(chartData));
+            const a = document.createElement("a");
+            a.href = chartDataUri;
+            a.download = "chart.json";
+            a.style.display = "none";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    };
 
     const queryOutputResult = props.getQueryOutput[currentActiveTab];
-    //     // console.log("type of ", typeof(queryOutputResult));
 
     return (
         <>
@@ -119,7 +125,7 @@ export default function QuerySection(props) {
                             <ShareIcon />
                             <span className="text-white text-[12px] ml-[4px]">Share</span>
                         </button>
-                        <button className="flex items-center">
+                        <button onClick={downloadChart} className="flex items-center">
                             <Download />
                             <span className="text-white text-[12px] ml-[4px]">Download</span>
                         </button>
@@ -141,8 +147,11 @@ export default function QuerySection(props) {
                         <button onClick={() => {
                             handleExecuteQuery();
                         }}
-                            className="bg-[#232129] text-white px-4 py-2 rounded-md absolute bottom-[10px] left-[85%]">
+                            className="bg-[#232129] text-white px-4 py-2 rounded-md absolute top-[10px] left-[85%]">
                             <Run />
+                        </button>
+                        <button className="bg-[#232129] text-white px-5 py-3 rounded-md absolute top-[60px] left-[85%]">
+                            <Copy />
                         </button>
                     </div>
                     {props.showSavedQuery && (
