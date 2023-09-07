@@ -1,45 +1,41 @@
 import * as React from "react";
 const BarChart = (props) => (
-    <svg
-    width={66}
-    height={56}
-    viewBox="0 0 66 56"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    {...props}
-  >
-    <g clipPath="url(#clip0_17_372)">
-      <path d="M41.4482 14H5.24133V19.069H41.4482V14Z" fill="#6243E0" />
-      <path
-        d="M45.3103 27.0345H5.24133V32.1035H45.3103V27.0345Z"
-        fill="#6243E0"
-      />
-      <path
-        d="M30.3448 40.3104H5.24133V45.3793H30.3448V40.3104Z"
-        fill="#6243E0"
-      />
-      <path
-        d="M21.6551 19.3104H5.24133V24.3793H21.6551V19.3104Z"
-        fill="#A3562B"
-      />
-      <path
-        d="M22.3793 32.3448H5.24133V37.6552H22.3793V32.3448Z"
-        fill="#A3562B"
-      />
-      <path d="M40 45.6207H5.24133V50.6897H40V45.6207Z" fill="#A3562B" />
-      <path d="M5.24138 12.5517H5V52.1379H5.24138V12.5517Z" fill="#333333" />
-    </g>
-    <rect x={1} y={0.5} width={64} height={55} rx={3.5} stroke="#434151" />
-    <defs>
-      <clipPath id="clip0_17_372">
-        <rect
-          width={56}
-          height={48.2759}
-          fill="white"
-          transform="translate(5 7.72414)"
-        />
-      </clipPath>
-    </defs>
-  </svg>
+  <svg
+  width={58}
+  height={40}
+  viewBox="0 0 58 40"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  {...props}
+>
+  <path
+    d="M5.76882 13.1343H1.93689V39.7015H5.76882V13.1343Z"
+    fill="#6243E0"
+  />
+  <path d="M19.8991 0H16.3066V39.7015H19.8991V0Z" fill="#6243E0" />
+  <path
+    d="M34.0293 23.2836H30.4369V39.7015H34.0293V23.2836Z"
+    fill="#6243E0"
+  />
+  <path
+    d="M48.1596 2.98508H44.5671V39.7015H48.1596V2.98508Z"
+    fill="#6243E0"
+  />
+  <path
+    d="M9.60086 16.7164H6.00842V39.7015H9.60086V16.7164Z"
+    fill="#B153FB"
+  />
+  <path d="M23.731 9.55219H20.1385V39.7014H23.731V9.55219Z" fill="#B153FB" />
+  <path d="M37.8612 0H34.2688V39.7015H37.8612V0Z" fill="#B153FB" />
+  <path d="M51.9915 20.8955H48.399V39.7015H51.9915V20.8955Z" fill="#B153FB" />
+  <path d="M13.4328 19.403H9.84033V39.7015H13.4328V19.403Z" fill="#A3562B" />
+  <path d="M27.563 21.4925H23.9706V39.7015H27.563V21.4925Z" fill="#A3562B" />
+  <path
+    d="M41.6933 25.0746H38.1008V39.7015H41.6933V25.0746Z"
+    fill="#A3562B"
+  />
+  <path d="M56.0629 20.8955H52.231V39.7015H56.0629V20.8955Z" fill="#A3562B" />
+  <path d="M57.5 39.7015H0.5V40H57.5V39.7015Z" fill="#333333" />
+</svg>
 );
 export default BarChart;

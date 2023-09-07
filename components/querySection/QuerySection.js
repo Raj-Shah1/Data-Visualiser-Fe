@@ -14,6 +14,10 @@ import BarChart from "../../assets/chart-svg/BarChart";
 import { Chart } from 'react-google-charts';
 import Copy from "../../assets/svg/Copy";
 import RightTick from "../../assets/svg/RightTick";
+import Table from "../../assets/chart-svg/Table";
+import LineChart from "../../assets/chart-svg/LineChart";
+import PieChart from "../../assets/chart-svg/PieChart";
+import Save from "../../assets/svg/Save";
 
 
 export default function QuerySection(props) {
@@ -42,10 +46,13 @@ export default function QuerySection(props) {
     };
 
     const handleChangeQuery = (value) => {
+
         const updatedTabs = tabs.map((tab) =>
             tab.id === props.activeTab ? { ...tab, query: value } : tab
         );
         setTabs(updatedTabs);
+
+        props.setGeneratedQuery({ ...props.generatedQuery, [props.activeTab]: value })
     };
 
     const handleExecuteQuery = () => {
@@ -73,7 +80,7 @@ export default function QuerySection(props) {
                 }
             })
             .then(queryOutput => {
-                props.setQueryOutput({ ...props.generatedQuery, [currentActiveTab]: queryOutput });
+                props.setQueryOutput({ ...props.getQueryOutput, [currentActiveTab]: queryOutput });
                 setSelectedChartType("Table");
             })
             .catch(error => {
@@ -124,11 +131,11 @@ export default function QuerySection(props) {
     });
 
     const chartTypes = [
-        { label: <ColumnChart />, type: "Table" },
+        { label: <Table />, type: "Table" },
         { label: <BarChart />, type: "BarChart" },
-        { label: <BarChart />, type: "LineChart" },
-        { label: <BarChart />, type: "ColumnChart" },
-        { label: <BarChart />, type: "PieChart" },
+        { label: <ColumnChart />, type: "ColumnChart" },
+        { label: <LineChart />, type: "LineChart" },
+        { label: <PieChart />, type: "PieChart" },
     ];
 
 
@@ -154,19 +161,24 @@ export default function QuerySection(props) {
         titleTextStyle: {
             color: 'white',
         },
-        showRowNumber: true, 
+        showRowNumber: true,
     };
+
 
     return (
         <>
             <div className="bg-[#25242d80] mx-[32px] min-h-[740px]">
                 <div className="px-[25px] py-[10px] flex rounded-[12px] ">
                     <div className="flex items-center gap-[22px]">
+                        <button className="bg-[#d4cbff4d] text-white text-[12px] px-[12px] py-[8px] rounded-[44px] flex items-center">
+                            <Save />
+                            <span className="ml-[4px]">Saved Queries</span>
+                        </button>
                         <div className="flex gap-[22px]">
-                            {tabs.map((tab) => (
+                            {tabs.slice(0, 10).map((tab) => (
                                 <div
                                     key={tab.id}
-                                    className={`bg-[#d4cbff4d] px-[12px] py-[8px] rounded-[44px] flex items-center ${tab.id === props.activeTab ? "border-2 border-blue-500" : ""
+                                    className={`bg-[#d4cbff4d] px-[12px] py-[8px] rounded-[44px] flex items-center ${tab.id === props.activeTab ? "border border-white" : ""
                                         }`}
                                 >
                                     <p
@@ -205,7 +217,7 @@ export default function QuerySection(props) {
                             name="UNIQUE_ID_OF_DIV"
                             editorProps={{ $blockScrolling: true }}
                             highlightActiveLine={false}
-                            value={tabs.find((tab) => tab.id === props.activeTab) ? props.generatedQuery[props.activeTab] : ""}
+                            value={tabs.find((tab) => tab.id === props.activeTab) ? props.generatedQuery[props.activeTab] || "" : ""}
                             onChange={handleChangeQuery}
                             style={{ borderBottomLeftRadius: "12px", borderTopLeftRadius: "12px", minHeight: "660px", minWidth: "600px", }}
                         />
@@ -220,10 +232,10 @@ export default function QuerySection(props) {
                         </button>
                     </div>
                     {props.showSavedQuery && (
-                        <div className="bg-[#100E12] min-h-[660px] min-w-[150px]">
+                        <div className="bg-[#100E12] min-h-[660px]">
                             <p className="text-white px-[12px] py-[8px] bg-[#232129] text-center font-normal text-[10px]">Select Graph</p>
                             {chartTypes.map((chart) => (
-                                <div className="flex justify-center my-[10px]" key={chart.type} onClick={() => handleChartButtonClick(chart.type)}>
+                                <div className={`flex m-[10px] p-[10px] justify-center my-[30px] ${selectedChartType === chart.type ? 'border-grey border rounded-[4px]' : ''}`} key={chart.type} onClick={() => handleChartButtonClick(chart.type)}>
                                     {chart.label}
                                 </div>
                             ))}
