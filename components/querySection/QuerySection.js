@@ -206,9 +206,9 @@ export default function QuerySection(props) {
             <div className="bg-[#25242d80] mx-[32px] min-h-[740px]">
                 <div className="px-[25px] py-[10px] flex rounded-[12px] ">
                     <div className="flex items-center gap-[22px]">
-                        <button className="bg-[#d4cbff4d] text-white text-[12px] px-[12px] py-[8px] rounded-[44px] flex items-center">
+                        <button onClick={handleSaveQuery} className="bg-[#d4cbff4d] text-white text-[12px] px-[12px] py-[8px] rounded-[44px] flex items-center">
                             <Save />
-                            <span onClick={handleSaveQuery} className="ml-[4px]">Saved Queries</span>
+                            <span className="ml-[4px]">Saved Queries</span>
                         </button>
                         <div className="flex gap-[22px]">
                             {tabs.slice(0, 12).map((tab) => (
