@@ -21,6 +21,7 @@ export default function QuerySection(props) {
     const [tabs, setTabs] = useState([{ id: 1, query: "" }]);
     const [isCopied, setIsCopied] = useState(false);
     const copyBtnRef = useRef();
+    const [selectedChartType, setSelectedChartType] = useState(null);
 
     const currentActiveTab = props.activeTab;
 
@@ -77,8 +78,10 @@ export default function QuerySection(props) {
             .catch(error => {
                 console.error('Error:', error);
             });
-            props.setShowSavedQuery(true);
+        props.setShowSavedQuery(true);
     }
+
+    const queryOutputResult = props.getQueryOutput[currentActiveTab];
 
     const downloadChart = () => {
         const chartData = queryOutputResult ? JSON.parse(queryOutputResult) : null;
@@ -97,21 +100,15 @@ export default function QuerySection(props) {
     const handleCopyToClipboard = () => {
         const queryToCopy = props.generatedQuery[currentActiveTab];
 
-        // Create a textarea element to hold the text to be copied
         const textarea = document.createElement('textarea');
         textarea.value = queryToCopy;
         textarea.setAttribute('readonly', '');
         textarea.style.position = 'absolute';
         textarea.style.left = '-9999px';
 
-        // Append the textarea to the DOM
         document.body.appendChild(textarea);
-
-        // Select and copy the text
         textarea.select();
         document.execCommand('copy');
-
-        // Remove the textarea from the DOM
         document.body.removeChild(textarea);
 
         setIsCopied(true);
@@ -125,7 +122,16 @@ export default function QuerySection(props) {
         copyBtnRef.current.addEventListener('click', handleCopyToClipboard)
     });
 
-    const queryOutputResult = props.getQueryOutput[currentActiveTab];
+    const chartTypes = [
+        { label: <ColumnChart />, type: "ColumnChart" },
+        { label: <BarChart />, type: "BarChart" },
+      ];
+    
+
+    const handleChartButtonClick = (chartType) => {
+        setSelectedChartType(chartType);
+      };
+    
 
     return (
         <>
@@ -192,20 +198,23 @@ export default function QuerySection(props) {
                     {props.showSavedQuery && (
                         <div className="bg-[#100E12] min-h-[660px] min-w-[150px]">
                             <p className="text-white px-[12px] py-[8px] bg-[#232129] text-center font-normal text-[10px]">Select Graph</p>
-                            <div className="flex gap-[24px] flex-col items-center pt-[24px]">
-                                <button><ColumnChart /></button>
-                                <button><BarChart /></button>
-                            </div>
+                            {chartTypes.map((chart) => (
+                                 <div className="flex justify-center my-[10px]" key={chart.type} onClick={() => handleChartButtonClick(chart.type)}>
+                                    {chart.label}
+                                </div>
+                            ))}
                         </div>
                     )}
                     <div className="ml-[50px]">
-                        <Chart
-                            chartType="ScatterChart"
-                            data={queryOutputResult ? JSON.parse(queryOutputResult) : ""}
-                            width="100%"
-                            height="400px"
-                            legendToggle
-                        />
+                        {selectedChartType && (
+                            <Chart
+                                chartType={selectedChartType}
+                                data={queryOutputResult ? JSON.parse(queryOutputResult) : ""}
+                                width="100%"
+                                height="400px"
+                                legendToggle
+                            />
+                        )}
                     </div>
                 </div>
             </div>
