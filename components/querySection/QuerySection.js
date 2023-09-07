@@ -18,7 +18,8 @@ import Table from "../../assets/chart-svg/Table";
 import LineChart from "../../assets/chart-svg/LineChart";
 import PieChart from "../../assets/chart-svg/PieChart";
 import Save from "../../assets/svg/Save";
-
+import Edit from "../../assets/svg/Edit";
+import Delete from "../../assets/svg/Delete";
 
 export default function QuerySection(props) {
 
@@ -43,6 +44,7 @@ export default function QuerySection(props) {
 
     const switchTab = (tabId) => {
         props.setActiveTab(tabId);
+        props.setSaveQuery(false);
     };
 
     const handleChangeQuery = (value) => {
@@ -126,9 +128,9 @@ export default function QuerySection(props) {
     };
 
     useEffect(() => {
-        if (!copyBtnRef) return
+        if (!copyBtnRef.current) return
         copyBtnRef.current.addEventListener('click', handleCopyToClipboard)
-    });
+    }, [copyBtnRef.current]);
 
     const chartTypes = [
         { label: <Table />, type: "Table" },
@@ -164,6 +166,40 @@ export default function QuerySection(props) {
         showRowNumber: true,
     };
 
+    const [savedQuery, setGetSavedQuery] = useState([]);
+
+    const handleSaveQuery = () => {
+
+        const fetchSaveQueryUrl = 'http://127.0.0.1:5000/queries';
+
+        const headers = {
+            'Content-Type': 'application/json'
+        };
+
+        fetch(fetchSaveQueryUrl, {
+            method: 'GET',
+            headers: headers,
+        })
+            .then(response => {
+
+                if (response.ok) {
+                    return response.text();
+                } else {
+                    throw new Error('Request failed');
+                }
+            })
+            .then(res => {
+
+                setGetSavedQuery(JSON.parse(res));
+                props.setSaveQuery(true);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+    }
+
+    console.log(savedQuery)
 
     return (
         <>
@@ -172,10 +208,10 @@ export default function QuerySection(props) {
                     <div className="flex items-center gap-[22px]">
                         <button className="bg-[#d4cbff4d] text-white text-[12px] px-[12px] py-[8px] rounded-[44px] flex items-center">
                             <Save />
-                            <span className="ml-[4px]">Saved Queries</span>
+                            <span onClick={handleSaveQuery} className="ml-[4px]">Saved Queries</span>
                         </button>
                         <div className="flex gap-[22px]">
-                            {tabs.slice(0, 10).map((tab) => (
+                            {tabs.slice(0, 12).map((tab) => (
                                 <div
                                     key={tab.id}
                                     className={`bg-[#d4cbff4d] px-[12px] py-[8px] rounded-[44px] flex items-center ${tab.id === props.activeTab ? "border border-white" : ""
@@ -198,10 +234,6 @@ export default function QuerySection(props) {
                         </button>
                     </div>
                     <div className="flex gap-[28px] ml-auto">
-                        <button className="flex items-center">
-                            <ShareIcon />
-                            <span className="text-white text-[12px] ml-[4px]">Share</span>
-                        </button>
                         <button onClick={downloadChart} className="flex items-center">
                             <Download />
                             <span className="text-white text-[12px] ml-[4px]">Download</span>
@@ -210,27 +242,43 @@ export default function QuerySection(props) {
                 </div>
 
                 <div className="flex">
-                    <div className="px-[25px] relative">
-                        <AceEditor
-                            mode="mysql"
-                            theme="twilight"
-                            name="UNIQUE_ID_OF_DIV"
-                            editorProps={{ $blockScrolling: true }}
-                            highlightActiveLine={false}
-                            value={tabs.find((tab) => tab.id === props.activeTab) ? props.generatedQuery[props.activeTab] || "" : ""}
-                            onChange={handleChangeQuery}
-                            style={{ borderBottomLeftRadius: "12px", borderTopLeftRadius: "12px", minHeight: "660px", minWidth: "600px", }}
-                        />
-                        <button onClick={() => {
-                            handleExecuteQuery();
-                        }}
-                            className="bg-[#232129] text-white px-4 py-2 rounded-md absolute top-[10px] left-[85%]">
-                            <Run />
-                        </button>
-                        <button ref={copyBtnRef} className="bg-[#232129] text-white px-5 py-3 rounded-md absolute top-[60px] left-[85%]">
-                            {isCopied ? <RightTick /> : <Copy />}
-                        </button>
-                    </div>
+                    {!props.isSaveQuery &&
+                        <div className="px-[25px] relative">
+                            <AceEditor
+                                mode="mysql"
+                                theme="twilight"
+                                name="UNIQUE_ID_OF_DIV"
+                                editorProps={{ $blockScrolling: true }}
+                                highlightActiveLine={false}
+                                value={tabs.find((tab) => tab.id === props.activeTab) ? props.generatedQuery[props.activeTab] || "" : ""}
+                                onChange={handleChangeQuery}
+                                style={{ borderBottomLeftRadius: "12px", borderTopLeftRadius: "12px", minHeight: "660px", minWidth: "600px", }}
+                            />
+                            <button onClick={() => {
+                                handleExecuteQuery();
+                            }}
+                                className="bg-[#232129] text-white px-4 py-2 rounded-md absolute top-[10px] left-[85%]">
+                                <Run />
+                            </button>
+                            <button ref={copyBtnRef} className="bg-[#232129] text-white px-5 py-3 rounded-md absolute top-[60px] left-[85%]">
+                                {isCopied ? <RightTick /> : <Copy />}
+                            </button>
+                        </div>
+                    }
+
+                    {(props.isSaveQuery && savedQuery.length > 0) ? (<div className="bg-[#100E12] mx-[32px] min-h-[660px] min-w-[600px]" style={{ borderBottomLeftRadius: "12px", borderTopLeftRadius: "12px" }}>{
+                        savedQuery.map(q =>
+                            <div className="flex justify-between cursor-pointer items-center border border-[#874BD4] rounded-[8px] m-[10px]">
+                                <p className="text-white text-[14px] p-[14px]">{q.name}</p>
+                                <div className="flex gap-[14px] mr-[14px]">
+                                    <span><Edit /></span>
+                                    <span><Delete /></span>
+                                </div>
+                            </div>)
+                    }
+                    </div>) : null
+                    }
+
                     {props.showSavedQuery && (
                         <div className="bg-[#100E12] min-h-[660px]">
                             <p className="text-white px-[12px] py-[8px] bg-[#232129] text-center font-normal text-[10px]">Select Graph</p>
