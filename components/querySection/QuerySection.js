@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import CrossIcon from "../../assets/svg/CrossIcon";
 import Download from "../../assets/svg/Download";
 import ShareIcon from "../../assets/svg/Share";
@@ -13,11 +13,14 @@ import ColumnChart from "../../assets/chart-svg/ColumnChart";
 import BarChart from "../../assets/chart-svg/BarChart";
 import { Chart } from 'react-google-charts';
 import Copy from "../../assets/svg/Copy";
+import RightTick from "../../assets/svg/RightTick";
 
 
 export default function QuerySection(props) {
 
     const [tabs, setTabs] = useState([{ id: 1, query: "" }]);
+    const [isCopied, setIsCopied] = useState(false);
+    const copyBtnRef = useRef();
 
     const currentActiveTab = props.activeTab;
 
@@ -74,6 +77,7 @@ export default function QuerySection(props) {
             .catch(error => {
                 console.error('Error:', error);
             });
+            props.setShowSavedQuery(true);
     }
 
     const downloadChart = () => {
@@ -89,6 +93,37 @@ export default function QuerySection(props) {
             document.body.removeChild(a);
         }
     };
+
+    const handleCopyToClipboard = () => {
+        const queryToCopy = props.generatedQuery[currentActiveTab];
+
+        // Create a textarea element to hold the text to be copied
+        const textarea = document.createElement('textarea');
+        textarea.value = queryToCopy;
+        textarea.setAttribute('readonly', '');
+        textarea.style.position = 'absolute';
+        textarea.style.left = '-9999px';
+
+        // Append the textarea to the DOM
+        document.body.appendChild(textarea);
+
+        // Select and copy the text
+        textarea.select();
+        document.execCommand('copy');
+
+        // Remove the textarea from the DOM
+        document.body.removeChild(textarea);
+
+        setIsCopied(true);
+        setTimeout(() => {
+            setIsCopied(false);
+        }, 2000);
+    };
+
+    useEffect(() => {
+        if (!copyBtnRef) return
+        copyBtnRef.current.addEventListener('click', handleCopyToClipboard)
+    });
 
     const queryOutputResult = props.getQueryOutput[currentActiveTab];
 
@@ -150,8 +185,8 @@ export default function QuerySection(props) {
                             className="bg-[#232129] text-white px-4 py-2 rounded-md absolute top-[10px] left-[85%]">
                             <Run />
                         </button>
-                        <button className="bg-[#232129] text-white px-5 py-3 rounded-md absolute top-[60px] left-[85%]">
-                            <Copy />
+                        <button ref={copyBtnRef} className="bg-[#232129] text-white px-5 py-3 rounded-md absolute top-[60px] left-[85%]">
+                            {isCopied ? <RightTick /> : <Copy />}
                         </button>
                     </div>
                     {props.showSavedQuery && (
