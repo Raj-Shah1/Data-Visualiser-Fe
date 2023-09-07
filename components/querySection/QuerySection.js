@@ -196,6 +196,33 @@ export default function QuerySection(props) {
             .catch(error => {
                 console.error('Error:', error);
             });
+    }
+
+    const handleDelete = (q) => {
+
+        const deleteUrl = `http://127.0.0.1:5000/queries/${q.id}`
+
+        const headers = {
+            'Content-Type': 'application/json'
+        };
+
+        fetch(deleteUrl, {
+            method: 'DELETE',
+            headers: headers,
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                } else {
+                    return response.text();
+                }
+            })
+            .then(data => {
+                   handleSaveQuery();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
 
     }
 
@@ -272,7 +299,7 @@ export default function QuerySection(props) {
                                 <p className="text-white text-[14px] p-[14px]">{q.name}</p>
                                 <div className="flex gap-[14px] mr-[14px]">
                                     <span><Edit /></span>
-                                    <span><Delete /></span>
+                                    <span onClick={ () => handleDelete(q)}><Delete /></span>
                                 </div>
                             </div>)
                     }

@@ -98,7 +98,7 @@ export default function Navbar(props) {
                 }
             })
             .then(data => {
-                if(data) {
+                if(!response.ok) {
                     alert(data);
                 }
             })
