@@ -74,6 +74,7 @@ export default function QuerySection(props) {
             })
             .then(queryOutput => {
                 props.setQueryOutput({ ...props.generatedQuery, [currentActiveTab]: queryOutput });
+                setSelectedChartType("Table");
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -123,15 +124,38 @@ export default function QuerySection(props) {
     });
 
     const chartTypes = [
-        { label: <ColumnChart />, type: "ColumnChart" },
+        { label: <ColumnChart />, type: "Table" },
         { label: <BarChart />, type: "BarChart" },
-      ];
-    
+        { label: <BarChart />, type: "LineChart" },
+        { label: <BarChart />, type: "ColumnChart" },
+        { label: <BarChart />, type: "PieChart" },
+    ];
+
 
     const handleChartButtonClick = (chartType) => {
         setSelectedChartType(chartType);
-      };
-    
+    };
+
+    const options = {
+        backgroundColor: 'transparent',
+        hAxis: {
+            textStyle: {
+                color: 'white',
+            },
+        },
+        vAxis: {
+            textStyle: {
+                color: 'white',
+            },
+        },
+        legendTextStyle: {
+            color: 'white',
+        },
+        titleTextStyle: {
+            color: 'white',
+        },
+        showRowNumber: true, 
+    };
 
     return (
         <>
@@ -199,7 +223,7 @@ export default function QuerySection(props) {
                         <div className="bg-[#100E12] min-h-[660px] min-w-[150px]">
                             <p className="text-white px-[12px] py-[8px] bg-[#232129] text-center font-normal text-[10px]">Select Graph</p>
                             {chartTypes.map((chart) => (
-                                 <div className="flex justify-center my-[10px]" key={chart.type} onClick={() => handleChartButtonClick(chart.type)}>
+                                <div className="flex justify-center my-[10px]" key={chart.type} onClick={() => handleChartButtonClick(chart.type)}>
                                     {chart.label}
                                 </div>
                             ))}
@@ -210,9 +234,10 @@ export default function QuerySection(props) {
                             <Chart
                                 chartType={selectedChartType}
                                 data={queryOutputResult ? JSON.parse(queryOutputResult) : ""}
-                                width="100%"
-                                height="400px"
+                                width="600px"
+                                height="600px"
                                 legendToggle
+                                options={options}
                             />
                         )}
                     </div>
