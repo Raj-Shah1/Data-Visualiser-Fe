@@ -12,7 +12,7 @@ export default function Navbar(props) {
     };
     
     const handleGenerateClick = () => {
-        const generateUrl = 'http://127.0.0.1:5000/generate-query';
+        const generateUrl = 'http://127.0.0.1:5000/queries/generate';
 
         const data = {
             question: userInput,

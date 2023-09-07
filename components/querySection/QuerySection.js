@@ -50,7 +50,7 @@ export default function QuerySection(props) {
 
     const handleExecuteQuery = () => {
 
-        const executeUrl = 'http://127.0.0.1:5000/execute-query';
+        const executeUrl = 'http://127.0.0.1:5000/queries/execute';
 
         const data = {
             query: props.generatedQuery[currentActiveTab],
